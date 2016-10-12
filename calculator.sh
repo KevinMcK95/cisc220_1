@@ -9,16 +9,25 @@ END=:q
 
 while [ "$NUM1" != "$END" ] && [ "$OPERATOR" != "$END" ] ; do
 	if (( $NUMTURN==1  )) ; then
+		negative=false
 		read -p "Please insert a number: " NUM1 
 		if (( ${#NUM1}<1 )) ; then
 			echo -n "Error! "
 			continue
 		elif [ "$NUM1" = ":q" ] ; then
 			continue
+		elif [ "${NUM1:0:1}" = "-" ] ; then
+			NUM1=${NUM1:1}
+			negative=true
 		fi
 		case $NUM1 in
 			*[!0-9]*) echo -n "Error! " ;;
 			*) NUMTURN=0
+			   if [ "$negative" = "true" ] ; then
+			   	NUM1=-$NUM1
+			   else
+				NUM1=$NUM1
+			   fi
 			   if [ "$OPERATOR" != "0" ] ; then
 				if [ "$RESULT" = "a" ] ; then
 					RESULT=$(( $OLDNUM${OPERATOR}$NUM1 ))

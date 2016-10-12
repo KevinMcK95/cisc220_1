@@ -9,11 +9,11 @@ echo ''
 echo Welcome to the CISC220 Racing Arena!
 echo ''
 
-if (($NUMPLAY==0)) ; then
+if (($NUMPLAY<=0)) ; then
 	NUMPLAY=3
-elif [ "$NUMPLAY" -eq "$NUMPLAY" ] 2>/dev/null; then #If the character is not a number
+elif [ "$NUMPLAY" -eq "$NUMPLAY" ] 2>/dev/null; then #If the character is a number that is greater than 0
 	NUMPLAY=$NUMPLAY
-else
+else #If something other than a number is entered
 	NUMPLAY=3
 fi
 
@@ -58,14 +58,6 @@ currentWinner=0
 
 while (( $maxpos<40 )) ; do
 	read -n1 turnNum
-	if [ "$turnNum" -eq "$turnNum" ] 2>/dev/null ; then
-		turnNum=$turnNum
-	else
-		continue
-	fi
-	if (( $turnNum<1 || $turnNum>$NUMPLAY )) ; then
-		continue
-	fi	
 	clear
 	echo ''
 	echo Welcome to the CISC220 Racing Arena!
@@ -77,6 +69,27 @@ while (( $maxpos<40 )) ; do
 		1) echo User 1 press 1 to move forward. You don\'t like challening yourself, do you? ;;
 		*) echo User 1 press 1 to move forward, User 2 press 2, User 3 press 3, etc. ;;
 	esac
+
+	if [ "$turnNum" -eq "$turnNum" ] 2>/dev/null ; then
+		turnNum=$turnNum
+	else
+		echo ''
+		for player in ${PLAYERPOS[*]} ; do
+			echo "${player//$period/$space}"
+			echo ''
+		done
+		continue
+	fi
+
+	if  (( $turnNum<1 || $turnNum>$NUMPLAY )) ; then
+		echo ''
+		for player in ${PLAYERPOS[*]} ; do
+			echo "${player//$period/$space}"
+			echo ''
+		done
+		continue
+	fi	
+	
 	currentIndex=$(($turnNum-1))
 	currentMove=${PLAYERCOUNT[$currentIndex]}
 	PLAYERCOUNT[$currentIndex]=$(($currentMove+1))

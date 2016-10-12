@@ -15,7 +15,7 @@ for i in $(seq 0 ${#fullList[*]}) ; do
 	nextIndex=$(($i+1))
 	nextString=${fullList[$nextIndex]}
 	testString="$string $nextString"
-	if [ "${testString:0:10}" = "$ipTitle" ] ; then
+	if [ "${testString:0:10}" = "$ipTitle" ] ; then #if the name looks like "inet addr:NUMBER" as it does on my linux machine
 		ip+=( ${testString:10:${#nextString}} )
 	fi
 done
